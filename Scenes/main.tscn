@@ -1,3 +1,38 @@
 [gd_scene format=3 uid="uid://l3n7uqeyutva"]
 
 [node name="Main" type="Node2D"]
+
+[node name="GameUI" type="CanvasLayer" parent="."]
+
+[node name="BigBox" type="Panel" parent="GameUI"]
+offset_left = 110.0
+offset_top = 76.0
+offset_right = 610.0
+offset_bottom = 576.0
+
+[node name="SmallBoxesContainer" type="HBoxContainer" parent="GameUI"]
+offset_left = 62.0
+offset_top = 674.0
+offset_right = 102.0
+offset_bottom = 714.0
+size_flags_horizontal = 3
+
+[node name="SmallBox1" type="Panel" parent="GameUI/SmallBoxesContainer"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="SmallBox2" type="Panel" parent="GameUI/SmallBoxesContainer"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="SmallBox3" type="Panel" parent="GameUI/SmallBoxesContainer"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="SmallBox4" type="Panel" parent="GameUI/SmallBoxesContainer"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+size_flags_horizontal = 2
