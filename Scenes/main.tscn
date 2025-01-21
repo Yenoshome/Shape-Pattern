@@ -1,14 +1,27 @@
-[gd_scene format=3 uid="uid://l3n7uqeyutva"]
+[gd_scene load_steps=10 format=3 uid="uid://l3n7uqeyutva"]
+
+[ext_resource type="Texture2D" uid="uid://dva340gly8bne" path="res://Art/Big_Round.png" id="1_gy0c4"]
+[ext_resource type="Script" path="res://main.gd" id="1_jven1"]
+[ext_resource type="Texture2D" uid="uid://dia14sk4bht3v" path="res://Art/Small_Triangle.png" id="2_bscia"]
+[ext_resource type="Texture2D" uid="uid://dbocvwbcumrie" path="res://Art/Small_Round.png" id="3_sqckn"]
+[ext_resource type="Texture2D" uid="uid://de668jh8764kp" path="res://Art/Big_Square.png" id="3_t8ntn"]
+[ext_resource type="Texture2D" uid="uid://1jcjlng5u0jq" path="res://Art/Big_Star.png" id="4_3hl5d"]
+[ext_resource type="Texture2D" uid="uid://bhf47jyb8jgyn" path="res://Art/Small_Square.png" id="4_rab6y"]
+[ext_resource type="Texture2D" uid="uid://bjttgqm6vasmo" path="res://Art/Small_Star.png" id="5_00dcu"]
+[ext_resource type="Texture2D" uid="uid://dje68nkugiu36" path="res://Art/Big_Triangle.png" id="5_yp7fm"]
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_jven1")
+shapes = Array[Texture2D]([ExtResource("1_gy0c4"), ExtResource("3_t8ntn"), ExtResource("4_3hl5d"), ExtResource("5_yp7fm")])
 
 [node name="GameUI" type="CanvasLayer" parent="."]
 
-[node name="BigBox" type="Panel" parent="GameUI"]
+[node name="BigBox" type="TextureRect" parent="GameUI"]
 offset_left = 110.0
 offset_top = 76.0
 offset_right = 610.0
 offset_bottom = 576.0
+texture = ExtResource("1_gy0c4")
 
 [node name="SmallBoxesContainer" type="HBoxContainer" parent="GameUI"]
 offset_left = 62.0
@@ -17,22 +30,30 @@ offset_right = 102.0
 offset_bottom = 714.0
 size_flags_horizontal = 3
 
-[node name="SmallBox1" type="Panel" parent="GameUI/SmallBoxesContainer"]
+[node name="SmallBox1" type="TextureRect" parent="GameUI/SmallBoxesContainer"]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_horizontal = 2
+texture = ExtResource("2_bscia")
 
-[node name="SmallBox2" type="Panel" parent="GameUI/SmallBoxesContainer"]
+[node name="SmallBox2" type="TextureRect" parent="GameUI/SmallBoxesContainer"]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_horizontal = 2
+texture = ExtResource("3_sqckn")
 
-[node name="SmallBox3" type="Panel" parent="GameUI/SmallBoxesContainer"]
+[node name="SmallBox3" type="TextureRect" parent="GameUI/SmallBoxesContainer"]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_horizontal = 2
+texture = ExtResource("4_rab6y")
 
-[node name="SmallBox4" type="Panel" parent="GameUI/SmallBoxesContainer"]
+[node name="SmallBox4" type="TextureRect" parent="GameUI/SmallBoxesContainer"]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_horizontal = 2
+texture = ExtResource("5_00dcu")
+
+[node name="SequenceTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="SequenceTimer" to="." method="_on_sequence_timer_timeout"]
