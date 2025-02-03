@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://l3n7uqeyutva"]
+[gd_scene load_steps=12 format=3 uid="uid://l3n7uqeyutva"]
 
 [ext_resource type="Texture2D" uid="uid://dva340gly8bne" path="res://Art/Big_Round.png" id="1_gy0c4"]
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_jven1"]
@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://bhf47jyb8jgyn" path="res://Art/Small_Square.png" id="4_rab6y"]
 [ext_resource type="Texture2D" uid="uid://bjttgqm6vasmo" path="res://Art/Small_Star.png" id="5_00dcu"]
 [ext_resource type="Texture2D" uid="uid://dje68nkugiu36" path="res://Art/Big_Triangle.png" id="5_yp7fm"]
+[ext_resource type="Texture2D" uid="uid://4m2a01elswpw" path="res://Art/Winbackround.jpg" id="10_wqcex"]
+[ext_resource type="Texture2D" uid="uid://cqpjle8aqy05i" path="res://Art/LoseBackground.jpg" id="11_o64qd"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_jven1")
@@ -85,10 +87,46 @@ offset_right = 138.0
 offset_bottom = 152.0
 flat = true
 
+[node name="ScoreContainer" type="HBoxContainer" parent="GameUI"]
+offset_left = 518.0
+offset_top = 3.0
+offset_right = 684.0
+offset_bottom = 72.0
+
+[node name="ScoreLabel" type="Label" parent="GameUI/ScoreContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Score: "
+
+[node name="ScoreValue" type="Label" parent="GameUI/ScoreContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+
 [node name="SequenceTimer" type="Timer" parent="."]
+
+[node name="WinLoseUI" type="CanvasLayer" parent="."]
+
+[node name="WinGraphic" type="TextureRect" parent="WinLoseUI"]
+visible = false
+offset_left = -1039.0
+offset_right = 1920.0
+offset_bottom = 1368.0
+texture = ExtResource("10_wqcex")
+
+[node name="LoseGraphic" type="TextureRect" parent="WinLoseUI"]
+visible = false
+offset_left = -966.0
+offset_right = 1920.0
+offset_bottom = 1339.0
+texture = ExtResource("11_o64qd")
+
+[node name="ResetTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
 
 [connection signal="pressed" from="GameUI/SmallBoxesContainer/SmallBox1/TriangleButton" to="." method="_on_triangle_button_pressed"]
 [connection signal="pressed" from="GameUI/SmallBoxesContainer/SmallBox2/CircleButton" to="." method="_on_circle_button_pressed"]
 [connection signal="pressed" from="GameUI/SmallBoxesContainer/SmallBox3/SquareButton" to="." method="_on_square_button_pressed"]
 [connection signal="pressed" from="GameUI/SmallBoxesContainer/SmallBox4/StarButton" to="." method="_on_star_button_pressed"]
 [connection signal="timeout" from="SequenceTimer" to="." method="_on_sequence_timer_timeout"]
+[connection signal="timeout" from="ResetTimer" to="." method="_on_reset_timer_timeout"]
