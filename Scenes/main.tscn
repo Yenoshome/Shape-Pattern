@@ -102,6 +102,24 @@ text = "Score: "
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 
+[node name="LivesLayer" type="CanvasLayer" parent="GameUI"]
+
+[node name="LivesContainer" type="HBoxContainer" parent="GameUI/LivesLayer"]
+offset_left = 458.0
+offset_top = 1019.0
+offset_right = 639.0
+offset_bottom = 1088.0
+
+[node name="LivesLabel" type="Label" parent="GameUI/LivesLayer/LivesContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Lives: "
+
+[node name="LivesValue" type="Label" parent="GameUI/LivesLayer/LivesContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "3"
+
 [node name="SequenceTimer" type="Timer" parent="."]
 
 [node name="WinLoseUI" type="CanvasLayer" parent="."]

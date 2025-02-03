@@ -9,6 +9,7 @@ var is_waiting_for_input = false
 var current_index = 0
 var is_displaying_sequence = true
 var score = 0
+var lives = 3
 
 # FUNCTIONS
 func _ready():
@@ -46,6 +47,7 @@ func check_player_sequence():
 		else:
 			show_graphic("lose")
 			decrease_score()
+			decrease_lives()
 		$ResetTimer.start()	
 		
 	
@@ -63,7 +65,8 @@ func display_next_shape():
 func _on_sequence_timer_timeout():
 	display_next_shape()
 	
-	
+func update_lives_display():
+	$GameUI/LivesLayer/LivesContainer/LivesValue.text = str(lives)	
 	
 func show_graphic(outcome: String):
 	$WinLoseUI/WinGraphic.visible = outcome == "win"
@@ -78,6 +81,22 @@ func increase_score():
 func decrease_score():
 	score -= 1
 	$GameUI/ScoreContainer/ScoreValue.text = str(score)
+
+func decrease_lives():
+	lives -= 1
+	update_lives_display()
+	if lives <= 0:
+		game_over()
+	
+	
+func game_over():
+	print ("Game Over")
+	lives = 3
+	score = 0
+	update_lives_display()
+	$GameUI/ScoreContainer/ScoreValue.text = str(score)
+	reset_game()
+	
 	
 func _on_triangle_button_pressed():
 	if is_waiting_for_input:
