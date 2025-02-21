@@ -1,6 +1,5 @@
 extends Node2D
 
-
 # VARIABLES
 @export var shapes : Array[Texture2D] = []
 var shape_sequence = []
@@ -10,46 +9,74 @@ var current_index = 0
 var is_displaying_sequence = true
 var score = 0
 var lives = 3
+var consec_wins = 0
+var loss_count = 0
 
 # FUNCTIONS
 func _ready():
-	#print ("Script is loading!!")
 	randomize()
-	generate_sequence(4)
-	display_next_shape()
+	generate_sequence()
+	update_lives_display()
+	is_displaying_sequence = true
 	current_index = 0
+	display_next_shape()
 	
-func generate_sequence(length):
-	if length > shapes.size():
-		print ("Error, length is too much")
-		return
-		
+func generate_sequence():
+	var base_length = 3
+	var sequence_length = base_length + consec_wins
+	sequence_length = max(sequence_length, 3)
+	
 	var shuffled_shapes = shapes.duplicate()
 	shuffled_shapes.shuffle()
-
-	shape_sequence = shuffled_shapes.slice(0, length)
+	
+	shape_sequence.clear()
+	
+	for i in range(sequence_length):
+		var new_shape = shuffled_shapes[randi() % shuffled_shapes.size()]
+		while shape_sequence.size() > 0 and shape_sequence[shape_sequence.size() - 1] == new_shape:
+			new_shape = shuffled_shapes[randi() % shuffled_shapes.size()]
+		shape_sequence.append(new_shape)
+	
 	
 	
 func reset_game():
 	player_sequence.clear()
 	current_index = 0
 	is_waiting_for_input = false
-	
-	generate_sequence(4)
-	#print ("Hey,new round has started!!!")
-	
-	
+	is_displaying_sequence = true
+	generate_sequence()
+	display_next_shape()
+
+
+
+
 func check_player_sequence():
 	if player_sequence.size() == shape_sequence.size():
 		if player_sequence == shape_sequence:
 			show_graphic("win")
+			consec_wins += 1
 			increase_score()
 		else:
 			show_graphic("lose")
-			decrease_score()
 			decrease_lives()
 		$ResetTimer.start()	
+	
+	
 		
+func check_loss_streak():
+	loss_count += 1
+	if loss_count >= 3:
+		reset_consec_wins()
+		game_over()
+	else:
+		reset_game()
+		
+		
+		
+func reset_consec_wins():
+	consec_wins = 0	
+	
+	
 	
 func display_next_shape():
 	if current_index < shape_sequence.size():
@@ -59,14 +86,18 @@ func display_next_shape():
 	else:
 		is_displaying_sequence = false
 		is_waiting_for_input = true
-		print ("Sequence is complete!! Now waiting for player input")
+
 
 
 func _on_sequence_timer_timeout():
 	display_next_shape()
 	
+	
+	
 func update_lives_display():
 	$GameUI/LivesLayer/LivesContainer/LivesValue.text = str(lives)	
+	
+	
 	
 func show_graphic(outcome: String):
 	$WinLoseUI/WinGraphic.visible = outcome == "win"
@@ -78,51 +109,49 @@ func increase_score():
 	score += 1
 	$GameUI/ScoreContainer/ScoreValue.text = str(score)
 	
-func decrease_score():
-	score -= 1
-	$GameUI/ScoreContainer/ScoreValue.text = str(score)
-
+	if score > GlobalData.high_score:
+		GlobalData.high_score = score
+	
 func decrease_lives():
 	lives -= 1
 	update_lives_display()
 	if lives <= 0:
 		game_over()
-	
-	
+
 func game_over():
-	print ("Game Over")
+	print("Game Over")
 	lives = 3
 	score = 0
+	consec_wins = 0
 	update_lives_display()
 	$GameUI/ScoreContainer/ScoreValue.text = str(score)
 	reset_game()
-	
-	
+
 func _on_triangle_button_pressed():
 	if is_waiting_for_input:
 		player_sequence.append(shapes[0])
 		check_player_sequence()
-
 
 func _on_circle_button_pressed():
 	if is_waiting_for_input:
 		player_sequence.append(shapes[1])
 		check_player_sequence()
 
-
 func _on_square_button_pressed():
 	if is_waiting_for_input:
 		player_sequence.append(shapes[2])
 		check_player_sequence()
-
 
 func _on_star_button_pressed():
 	if is_waiting_for_input:
 		player_sequence.append(shapes[3])
 		check_player_sequence()
 
-
 func _on_reset_timer_timeout():
 	$WinLoseUI/WinGraphic.visible = false
 	$WinLoseUI/LoseGraphic.visible = false
 	reset_game()
+
+func _on_button_pressed():
+	get_tree().change_scene_to_file("res://Scene/main_menu.tscn")
+
