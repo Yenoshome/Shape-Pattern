@@ -11,6 +11,8 @@ var score = 0
 var lives = 3
 var consec_wins = 0
 var loss_count = 0
+var base_speed = 1.0
+var min_speed = 0.2
 
 # FUNCTIONS
 func _ready():
@@ -37,6 +39,7 @@ func generate_sequence():
 			new_shape = shuffled_shapes[randi() % shuffled_shapes.size()]
 		shape_sequence.append(new_shape)
 	
+	adjust_speed()
 	
 	
 func reset_game():
@@ -47,8 +50,10 @@ func reset_game():
 	generate_sequence()
 	display_next_shape()
 
-
-
+func adjust_speed():
+	var speed_changer = max(min_speed, base_speed * pow(0.8, floor(consec_wins)))
+	$SequenceTimer.wait_time = speed_changer
+	print ("Current Speed: ", speed_changer)
 
 func check_player_sequence():
 	if player_sequence.size() == shape_sequence.size():
@@ -75,6 +80,7 @@ func check_loss_streak():
 		
 func reset_consec_wins():
 	consec_wins = 0	
+	$SequenceTimer.wait_time = base_speed
 	
 	
 	
